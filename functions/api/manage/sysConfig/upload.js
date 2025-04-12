@@ -130,10 +130,11 @@ export async function getUploadConfig(kv, env) {
     const s3Channels = []
     s3.channels = s3Channels
     if (env.S3_ACCESS_KEY_ID) {
-        const forcePathStyle = name.toLowerCase().includes('path');
+        const name = env.name;
+        const forcePathStyle = .toLowerCase().includes('path');
         s3Channels.push({
             id: 1,
-            name: 'S3_env',
+            name: name,
             type: 's3',
             savePath: 'environment variable',
             accessKeyId: env.S3_ACCESS_KEY_ID,
