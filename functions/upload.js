@@ -393,7 +393,7 @@ async function uploadFileToS3(env, formdata, fullId, metadata, returnLink, origi
         // metadata.S3Location = `https://${bucketName}.${s3ServerDomain}/${s3FileName}`; // 采用虚拟主机风格的 URL
 	    // 根据 usePathStyle 动态构造 S3Location
         metadata.S3Location = usePathStyle
-            ? `${endpoint}/${bucketName}/${s3FileName}` // Path Style
+            ? `https://${s3ServerDomain}/${bucketName}/${s3FileName}` // Path Style
             : `https://${bucketName}.${s3ServerDomain}/${s3FileName}`; // Virtual Hosted Style
         metadata.S3Endpoint = endpoint;
         metadata.S3AccessKeyId = accessKeyId;
