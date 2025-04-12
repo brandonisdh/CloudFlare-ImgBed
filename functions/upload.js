@@ -349,6 +349,8 @@ async function uploadFileToS3(env, formdata, fullId, metadata, returnLink, origi
 
     const { endpoint, accessKeyId, secretAccessKey, bucketName, region } = s3Channel;
 
+    // 判断是否使用 Path Style
+    const usePathStyle = bucketName.includes("pathstyle");
     // 创建 S3 客户端
     const s3Client = new S3Client({
         region: region || "auto", // R2 可用 "auto"
@@ -358,7 +360,7 @@ async function uploadFileToS3(env, formdata, fullId, metadata, returnLink, origi
             secretAccessKey
         },
        // 根据 bucketName 判断是否强制使用 Path Style
-        forcePathStyle: bucketName.includes("pathstyle")
+        forcePathStyle: usePathStyle
     });
 
     // 获取文件
@@ -388,7 +390,11 @@ async function uploadFileToS3(env, formdata, fullId, metadata, returnLink, origi
         metadata.ChannelName = s3Channel.name;
 
         const s3ServerDomain = endpoint.replace(/https?:\/\//, "");
-        metadata.S3Location = `https://${bucketName}.${s3ServerDomain}/${s3FileName}`; // 采用虚拟主机风格的 URL
+        // metadata.S3Location = `https://${bucketName}.${s3ServerDomain}/${s3FileName}`; // 采用虚拟主机风格的 URL
+	    // 根据 usePathStyle 动态构造 S3Location
+        metadata.S3Location = usePathStyle
+            ? `${endpoint}/${bucketName}/${s3FileName}` // Path Style
+            : `https://${bucketName}.${s3ServerDomain}/${s3FileName}`; // Virtual Hosted Style
         metadata.S3Endpoint = endpoint;
         metadata.S3AccessKeyId = accessKeyId;
         metadata.S3SecretAccessKey = secretAccessKey;
