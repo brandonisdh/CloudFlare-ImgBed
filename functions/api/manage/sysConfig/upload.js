@@ -130,6 +130,7 @@ export async function getUploadConfig(kv, env) {
     const s3Channels = []
     s3.channels = s3Channels
     if (env.S3_ACCESS_KEY_ID) {
+        const forcePathStyle = name.toLowerCase().includes('path');
         s3Channels.push({
             id: 1,
             name: 'S3_env',
@@ -140,6 +141,7 @@ export async function getUploadConfig(kv, env) {
             region: env.S3_REGION || 'auto',
             bucketName: env.S3_BUCKET_NAME,
             endpoint: env.S3_ENDPOINT,
+            forcePathStyle: forcePathStyle,
             enabled: true,
             fixed: true,
         })
