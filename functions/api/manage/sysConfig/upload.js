@@ -140,7 +140,6 @@ export async function getUploadConfig(kv, env) {
             region: env.S3_REGION || 'auto',
             bucketName: env.S3_BUCKET_NAME,
             endpoint: env.S3_ENDPOINT,
-            forcePathStyle: true,
             enabled: true,
             fixed: true,
         })
