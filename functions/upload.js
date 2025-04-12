@@ -356,7 +356,9 @@ async function uploadFileToS3(env, formdata, fullId, metadata, returnLink, origi
         credentials: {
             accessKeyId,
             secretAccessKey
-        }
+        },
+       // 根据 bucketName 判断是否强制使用 Path Style
+        forcePathStyle: bucketName.includes("bucket")
     });
 
     // 获取文件
